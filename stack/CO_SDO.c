@@ -107,17 +107,17 @@ void CO_setUint32(uint8_t data[], const uint32_t value){
 #ifdef CO_LITTLE_ENDIAN
 void CO_memcpySwap2(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[0];
     cdest[1] = csrc[1];
 }
 void CO_memcpySwap4(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[0];
     cdest[1] = csrc[1];
     cdest[2] = csrc[2];
@@ -125,9 +125,9 @@ void CO_memcpySwap4(void* dest, const void* src){
 }
 void CO_memcpySwap8(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[0];
     cdest[1] = csrc[1];
     cdest[2] = csrc[2];
@@ -141,17 +141,17 @@ void CO_memcpySwap8(void* dest, const void* src){
 #ifdef CO_BIG_ENDIAN
 void CO_memcpySwap2(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[1];
     cdest[1] = csrc[0];
 }
 void CO_memcpySwap4(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[3];
     cdest[1] = csrc[2];
     cdest[2] = csrc[1];
@@ -159,9 +159,9 @@ void CO_memcpySwap4(void* dest, const void* src){
 }
 void CO_memcpySwap8(void* dest, const void* src){
     char *cdest;
-    char *csrc;
-    cdest = (char *) dest;
-    csrc = (char *) src;
+    const char *csrc;
+    cdest = dest;
+    csrc = src;
     cdest[0] = csrc[7];
     cdest[1] = csrc[6];
     cdest[2] = csrc[5];
@@ -288,7 +288,7 @@ CO_ReturnError_t CO_SDO_init(
         uint32_t                COB_IDServerToClient,
         uint16_t                ObjDictIndex_SDOServerParameter,
         CO_SDO_t               *parentSDO,
-        const CO_OD_entry_t     OD[],
+        CO_OD_entry_t           OD[],
         uint16_t                ODSize,
         CO_OD_extension_t      *ODExtensions,
         uint8_t                 nodeId,
@@ -522,7 +522,7 @@ uint16_t CO_OD_getAttribute(CO_SDO_t *SDO, uint16_t entryNo, uint8_t subIndex){
 
 /******************************************************************************/
 void* CO_OD_getDataPointer(CO_SDO_t *SDO, uint16_t entryNo, uint8_t subIndex){
-    const CO_OD_entry_t* object = &SDO->OD[entryNo];
+    CO_OD_entry_t* object = &SDO->OD[entryNo];
 
     if(entryNo == 0xFFFFU){
         return 0;
@@ -534,7 +534,7 @@ void* CO_OD_getDataPointer(CO_SDO_t *SDO, uint16_t entryNo, uint8_t subIndex){
     else if(object->attribute != 0U){/* Object type is Array */
         if(subIndex==0){
             /* this is the data, for the subIndex 0 in the array */
-            return (void*) &object->maxSubIndex;
+            return &object->maxSubIndex;
         }
         else if(object->pData == 0){
             /* data type is domain */
@@ -617,7 +617,7 @@ uint32_t CO_SDO_initTransfer(CO_SDO_t *SDO, uint16_t index, uint8_t subIndex){
 /******************************************************************************/
 uint32_t CO_SDO_readOD(CO_SDO_t *SDO, uint16_t SDOBufferSize){
     uint8_t *SDObuffer = SDO->ODF_arg.data;
-    uint8_t *ODdata = (uint8_t*)SDO->ODF_arg.ODdataStorage;
+    const uint8_t *ODdata = SDO->ODF_arg.ODdataStorage;
     uint16_t length = SDO->ODF_arg.dataLength;
     CO_OD_extension_t *ext = 0;
 
@@ -682,8 +682,13 @@ uint32_t CO_SDO_readOD(CO_SDO_t *SDO, uint16_t SDOBufferSize){
 /******************************************************************************/
 uint32_t CO_SDO_writeOD(CO_SDO_t *SDO, uint16_t length){
     uint8_t *SDObuffer = SDO->ODF_arg.data;
-    uint8_t *ODdata = (uint8_t*)SDO->ODF_arg.ODdataStorage;
     bool_t exception_1003 = false;
+
+    /* the OD is declared as const. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
+    uint8_t *ODdata = SDO->ODF_arg.ODdataStorage;
+#pragma GCC diagnostic pop
 
     /* is object writeable? */
     if((SDO->ODF_arg.attribute & CO_ODA_WRITEABLE) == 0){

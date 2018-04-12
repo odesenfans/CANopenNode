@@ -276,7 +276,7 @@ static uint32_t CO_PDOfindMap(
     *pIsMultibyteVar = (attr&CO_ODA_MB_VALUE) ? 1 : 0;
 
     /* pointer to data */
-    *ppData = (uint8_t*) CO_OD_getDataPointer(SDO, entryNo, subIndex);
+    *ppData = CO_OD_getDataPointer(SDO, entryNo, subIndex);
 #ifdef CO_BIG_ENDIAN
     /* skip unused MSB bytes */
     if(*pIsMultibyteVar){
@@ -835,7 +835,7 @@ uint8_t CO_TPDOisCOS(const CO_TPDO_t* TPDO){
 
     /* Prepare TPDO data automatically from Object Dictionary variables */
     const uint8_t* const pPDOdata = &(TPDO->CANtxBuff->data[0u]);
-    uint8_t* const* ppODdata = &(TPDO->mapPointer[0u]);
+    const uint8_t* const* ppODdata = &(TPDO->mapPointer[0u]);
     const uint8_t dataLength = TPDO->dataLength;
 
     uint8_t rval = 0u;
@@ -857,7 +857,7 @@ uint8_t CO_TPDOisCOS(const CO_TPDO_t* TPDO){
 int16_t CO_TPDOsend(CO_TPDO_t *TPDO){
     int16_t i;
     uint8_t* pPDOdataByte;
-    uint8_t** ppODdataByte;
+    const uint8_t** ppODdataByte;
 
 #ifdef TPDO_CALLS_EXTENSION
     if(TPDO->SDO->ODExtensions){
