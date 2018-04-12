@@ -228,7 +228,7 @@ typedef struct{
     function CO_TPDO_process(). Depends on transmission type. */
     uint8_t             sendRequest;
     /** Pointers to 8 data objects, where PDO will be copied */
-    uint8_t            *mapPointer[8];
+    const uint8_t      *mapPointer[8];
     /** Each flag bit is connected with one mapPointer. If flag bit
     is true, CO_TPDO_process() functiuon will send PDO if
     Change of State is detected on value pointed by that mapPointer */

@@ -63,7 +63,7 @@
 
 
 /* Global variables ***********************************************************/
-    extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements];  /* Object Dictionary array */
+    extern CO_OD_entry_t CO_OD[CO_OD_NoOfElements];  /* Object Dictionary array */
     static CO_t COO;
     CO_t *CO = NULL;
 
