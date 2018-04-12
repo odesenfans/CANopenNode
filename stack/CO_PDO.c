@@ -50,6 +50,7 @@
 #include "CO_NMT_Heartbeat.h"
 #include "CO_SYNC.h"
 #include "CO_PDO.h"
+#include "CO_utils.h"
 #include <string.h>
 
 /*
@@ -441,7 +442,7 @@ static CO_SDO_abortCode_t CO_ODF_RPDOcom(CO_ODF_arg_t *ODF_arg){
     /* Reading Object Dictionary variable */
     if(ODF_arg->reading){
         if(ODF_arg->subIndex == 1){
-            uint32_t *value = (uint32_t*) ODF_arg->data;
+            uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
 
             /* if default COB ID is used, write default value here */
             if(((*value)&0xFFFF) == RPDO->defaultCOB_ID && RPDO->defaultCOB_ID)
@@ -460,7 +461,7 @@ static CO_SDO_abortCode_t CO_ODF_RPDOcom(CO_ODF_arg_t *ODF_arg){
         return CO_SDO_AB_DATA_DEV_STATE;   /* Data cannot be transferred or stored to the application because of the present device state. */
 
     if(ODF_arg->subIndex == 1){   /* COB_ID */
-        uint32_t *value = (uint32_t*) ODF_arg->data;
+        uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
 
         /* bits 11...29 must be zero */
         if(*value & 0x3FFF8000L)
@@ -514,7 +515,7 @@ static CO_SDO_abortCode_t CO_ODF_TPDOcom(CO_ODF_arg_t *ODF_arg){
     /* Reading Object Dictionary variable */
     if(ODF_arg->reading){
         if(ODF_arg->subIndex == 1){   /* COB_ID */
-            uint32_t *value = (uint32_t*) ODF_arg->data;
+            uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
 
             /* if default COB ID is used, write default value here */
             if(((*value)&0xFFFF) == TPDO->defaultCOB_ID && TPDO->defaultCOB_ID)
@@ -533,7 +534,7 @@ static CO_SDO_abortCode_t CO_ODF_TPDOcom(CO_ODF_arg_t *ODF_arg){
         return CO_SDO_AB_DATA_DEV_STATE;   /* Data cannot be transferred or stored to the application because of the present device state. */
 
     if(ODF_arg->subIndex == 1){   /* COB_ID */
-        uint32_t *value = (uint32_t*) ODF_arg->data;
+        uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
 
         /* bits 11...29 must be zero */
         if(*value & 0x3FFF8000L)
@@ -570,7 +571,7 @@ static CO_SDO_abortCode_t CO_ODF_TPDOcom(CO_ODF_arg_t *ODF_arg){
         TPDO->inhibitTimer = 0;
     }
     else if(ODF_arg->subIndex == 5){   /* Event_Timer */
-        uint16_t *value = (uint16_t*) ODF_arg->data;
+        uint16_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint16_t));
 
         TPDO->eventTimer = ((uint32_t) *value) * 1000;
     }
@@ -632,7 +633,7 @@ static CO_SDO_abortCode_t CO_ODF_RPDOmap(CO_ODF_arg_t *ODF_arg){
 
     /* mappedObject */
     else{
-        uint32_t *value = (uint32_t*) ODF_arg->data;
+        uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
         uint8_t* pData;
         uint8_t length = 0;
         uint8_t dummy = 0;
@@ -698,7 +699,7 @@ static CO_SDO_abortCode_t CO_ODF_TPDOmap(CO_ODF_arg_t *ODF_arg){
 
     /* mappedObject */
     else{
-        uint32_t *value = (uint32_t*) ODF_arg->data;
+        uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
         uint8_t* pData;
         uint8_t length = 0;
         uint8_t dummy = 0;

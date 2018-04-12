@@ -44,6 +44,7 @@
 
 
 #include "CO_trace.h"
+#include "CO_utils.h"
 #include <stdio.h>
 
 
@@ -198,7 +199,7 @@ static CO_SDO_abortCode_t CO_ODF_traceConfig(CO_ODF_arg_t *ODF_arg) {
     switch(ODF_arg->subIndex) {
     case 1:     /* size */
         if(ODF_arg->reading) {
-            uint32_t *value = (uint32_t*) ODF_arg->data;
+            uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
             *value = trace->bufferSize;
         }
         break;
@@ -267,7 +268,7 @@ static CO_SDO_abortCode_t CO_ODF_trace(CO_ODF_arg_t *ODF_arg) {
     switch(ODF_arg->subIndex) {
     case 1:     /* size */
         if(ODF_arg->reading) {
-            uint32_t *value = (uint32_t*) ODF_arg->data;
+            uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
             uint32_t size = trace->bufferSize;
             uint32_t wp = trace->writePtr;
             uint32_t rp = trace->readPtr;
@@ -280,7 +281,7 @@ static CO_SDO_abortCode_t CO_ODF_trace(CO_ODF_arg_t *ODF_arg) {
             }
         }
         else {
-            uint32_t *value = (uint32_t*) ODF_arg->data;
+            uint32_t *value = ASSUME_ALIGNED(ODF_arg->data, sizeof(uint32_t));
 
             if(*value == 0) {
                 /* clear buffer, handle race conditions */
