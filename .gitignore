@@ -1,10 +1,12 @@
+# Build directory and artefacts
+build*/
 canopennode
 *.o
 
+# Generated documentation
 doc/
 
-#eclipse
+# IDE files - eclipse
 .cproject
 .project
 .settings/
-
