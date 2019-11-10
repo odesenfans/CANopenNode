@@ -50,13 +50,12 @@
  * to do so, delete this exception statement from your version.
  */
 
-
-#ifndef CANopen_H
-#define CANopen_H
+#ifndef DEF_CANOPEN_H
+#define DEF_CANOPEN_H
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 /**
  * @defgroup CO_CANopen CANopen stack
@@ -74,27 +73,26 @@ extern "C" {
  * version 2 with the classpath exception.
  */
 
-
-    #include "CO_driver.h"
-    #include "CO_OD.h"
-    #include "CO_SDO.h"
-    #include "CO_Emergency.h"
-    #include "CO_NMT_Heartbeat.h"
-    #include "CO_SYNC.h"
-    #include "CO_PDO.h"
-    #include "CO_HBconsumer.h"
+#include "CO_Emergency.h"
+#include "CO_HBconsumer.h"
+#include "CO_NMT_Heartbeat.h"
+#include "CO_OD.h"
+#include "CO_PDO.h"
+#include "CO_SDO.h"
+#include "CO_SYNC.h"
+#include "CO_driver.h"
 #if CO_NO_SDO_CLIENT != 0
-    #include "CO_SDOmaster.h"
-#endif
+#include "CO_SDOmaster.h"
+#endif /* CO_NO_SDO_CLIENT != 0 */
 #if CO_NO_TRACE > 0
-    #include "CO_trace.h"
-#endif
+#include "CO_trace.h"
+#endif /* CO_NO_TRACE > 0 */
 #if CO_NO_LSS_SERVER == 1
-    #include "CO_LSSslave.h"
-#endif
+#include "CO_LSSslave.h"
+#endif /* CO_NO_LSS_SERVER == 1 */
 #if CO_NO_LSS_CLIENT == 1
-    #include "CO_LSSmaster.h"
-#endif
+#include "CO_LSSmaster.h"
+#endif /* CO_NO_LSS_CLIENT == 1 */
 
 /**
  * Default CANopen identifiers.
@@ -104,58 +102,55 @@ extern "C" {
  * can be changed in CANopen. Especially PDO identifiers are confgured
  * in PDO linking phase of the CANopen network configuration.
  */
-typedef enum{
-     CO_CAN_ID_NMT_SERVICE       = 0x000,   /**< 0x000, Network management */
-     CO_CAN_ID_SYNC              = 0x080,   /**< 0x080, Synchronous message */
-     CO_CAN_ID_EMERGENCY         = 0x080,   /**< 0x080, Emergency messages (+nodeID) */
-     CO_CAN_ID_TIME_STAMP        = 0x100,   /**< 0x100, Time stamp message */
-     CO_CAN_ID_TPDO_1            = 0x180,   /**< 0x180, Default TPDO1 (+nodeID) */
-     CO_CAN_ID_RPDO_1            = 0x200,   /**< 0x200, Default RPDO1 (+nodeID) */
-     CO_CAN_ID_TPDO_2            = 0x280,   /**< 0x280, Default TPDO2 (+nodeID) */
-     CO_CAN_ID_RPDO_2            = 0x300,   /**< 0x300, Default RPDO2 (+nodeID) */
-     CO_CAN_ID_TPDO_3            = 0x380,   /**< 0x380, Default TPDO3 (+nodeID) */
-     CO_CAN_ID_RPDO_3            = 0x400,   /**< 0x400, Default RPDO3 (+nodeID) */
-     CO_CAN_ID_TPDO_4            = 0x480,   /**< 0x480, Default TPDO4 (+nodeID) */
-     CO_CAN_ID_RPDO_4            = 0x500,   /**< 0x500, Default RPDO5 (+nodeID) */
-     CO_CAN_ID_TSDO              = 0x580,   /**< 0x580, SDO response from server (+nodeID) */
-     CO_CAN_ID_RSDO              = 0x600,   /**< 0x600, SDO request from client (+nodeID) */
-     CO_CAN_ID_HEARTBEAT         = 0x700,   /**< 0x700, Heartbeat message */
-     CO_CAN_ID_LSS_CLI           = 0x7E4,   /**< 0x7E4, LSS response from server to client */
-     CO_CAN_ID_LSS_SRV           = 0x7E5    /**< 0x7E5, LSS request from client to server */
-}CO_Default_CAN_ID_t;
-
+typedef enum {
+    CO_CAN_ID_NMT_SERVICE = 0x000, /**< 0x000, Network management */
+    CO_CAN_ID_SYNC = 0x080,        /**< 0x080, Synchronous message */
+    CO_CAN_ID_EMERGENCY = 0x080,   /**< 0x080, Emergency messages (+nodeID) */
+    CO_CAN_ID_TIME_STAMP = 0x100,  /**< 0x100, Time stamp message */
+    CO_CAN_ID_TPDO_1 = 0x180,      /**< 0x180, Default TPDO1 (+nodeID) */
+    CO_CAN_ID_RPDO_1 = 0x200,      /**< 0x200, Default RPDO1 (+nodeID) */
+    CO_CAN_ID_TPDO_2 = 0x280,      /**< 0x280, Default TPDO2 (+nodeID) */
+    CO_CAN_ID_RPDO_2 = 0x300,      /**< 0x300, Default RPDO2 (+nodeID) */
+    CO_CAN_ID_TPDO_3 = 0x380,      /**< 0x380, Default TPDO3 (+nodeID) */
+    CO_CAN_ID_RPDO_3 = 0x400,      /**< 0x400, Default RPDO3 (+nodeID) */
+    CO_CAN_ID_TPDO_4 = 0x480,      /**< 0x480, Default TPDO4 (+nodeID) */
+    CO_CAN_ID_RPDO_4 = 0x500,      /**< 0x500, Default RPDO5 (+nodeID) */
+    CO_CAN_ID_TSDO = 0x580,        /**< 0x580, SDO response from server (+nodeID) */
+    CO_CAN_ID_RSDO = 0x600,        /**< 0x600, SDO request from client (+nodeID) */
+    CO_CAN_ID_HEARTBEAT = 0x700,   /**< 0x700, Heartbeat message */
+    CO_CAN_ID_LSS_CLI = 0x7E4,     /**< 0x7E4, LSS response from server to client */
+    CO_CAN_ID_LSS_SRV = 0x7E5      /**< 0x7E5, LSS request from client to server */
+} CO_Default_CAN_ID_t;
 
 /**
  * CANopen stack object combines pointers to all CANopen objects.
  */
-typedef struct{
-    CO_CANmodule_t     *CANmodule[1];   /**< CAN module objects */
-    CO_SDO_t           *SDO[CO_NO_SDO_SERVER]; /**< SDO object */
-    CO_EM_t            *em;             /**< Emergency report object */
-    CO_EMpr_t          *emPr;           /**< Emergency process object */
-    CO_NMT_t           *NMT;            /**< NMT object */
-    CO_SYNC_t          *SYNC;           /**< SYNC object */
-    CO_RPDO_t          *RPDO[CO_NO_RPDO];/**< RPDO objects */
-    CO_TPDO_t          *TPDO[CO_NO_TPDO];/**< TPDO objects */
-    CO_HBconsumer_t    *HBcons;         /**<  Heartbeat consumer object*/
+typedef struct {
+    CO_CANmodule_t* CANmodule[1];    /**< CAN module objects */
+    CO_SDO_t* SDO[CO_NO_SDO_SERVER]; /**< SDO object */
+    CO_EM_t* em;                     /**< Emergency report object */
+    CO_EMpr_t* emPr;                 /**< Emergency process object */
+    CO_NMT_t* NMT;                   /**< NMT object */
+    CO_SYNC_t* SYNC;                 /**< SYNC object */
+    CO_RPDO_t* RPDO[CO_NO_RPDO];     /**< RPDO objects */
+    CO_TPDO_t* TPDO[CO_NO_TPDO];     /**< TPDO objects */
+    CO_HBconsumer_t* HBcons;         /**<  Heartbeat consumer object*/
 #if CO_NO_LSS_SERVER == 1
-    CO_LSSslave_t      *LSSslave;       /**< LSS server/slave object */
-#endif
+    CO_LSSslave_t* LSSslave; /**< LSS server/slave object */
+#endif                       /* CO_NO_LSS_SERVER == 1 */
 #if CO_NO_LSS_CLIENT == 1
-    CO_LSSmaster_t     *LSSmaster;      /**< LSS master/client object */
-#endif
+    CO_LSSmaster_t* LSSmaster; /**< LSS master/client object */
+#endif                         /* CO_NO_LSS_CLIENT == 1 */
 #if CO_NO_SDO_CLIENT != 0
-    CO_SDOclient_t     *SDOclient[CO_NO_SDO_CLIENT]; /**< SDO client object */
-#endif
+    CO_SDOclient_t* SDOclient[CO_NO_SDO_CLIENT]; /**< SDO client object */
+#endif                                           /* CO_NO_SDO_CLIENT != 0 */
 #if CO_NO_TRACE > 0
-    CO_trace_t         *trace[CO_NO_TRACE]; /**< Trace object for monitoring variables */
-#endif
-}CO_t;
-
+    CO_trace_t* trace[CO_NO_TRACE]; /**< Trace object for monitoring variables */
+#endif                              /* CO_NO_TRACE > 0 */
+} CO_t;
 
 /** CANopen object */
-    extern CO_t *CO;
-
+extern CO_t* CO;
 
 /**
  * Function CO_sendNMTcommand() is simple function, which sends CANopen message.
@@ -171,9 +166,8 @@ typedef struct{
  * @return other: same as CO_CANsend().
  */
 #if CO_NO_NMT_MASTER == 1
-    CO_ReturnError_t CO_sendNMTcommand(CO_t *CO, uint8_t command, uint8_t nodeID);
-#endif
-
+CO_ReturnError_t CO_sendNMTcommand(CO_t* CO, uint8_t command, uint8_t nodeID);
+#endif /* CO_NO_NMT_MASTER == 1 */
 
 #if CO_NO_LSS_SERVER == 1
 /**
@@ -186,35 +180,30 @@ typedef struct{
  */
 CO_ReturnError_t CO_new(void);
 
-
 /**
  * Initialize CAN driver
  *
  * Function must be called in the communication reset section.
  *
- * @param CANbaseAddress Address of the CAN module, passed to CO_CANmodule_init().
+ * @param CANbaseAddress Address of the CAN module, passed to
+ * CO_CANmodule_init().
  * @param bitRate CAN bit rate.
  * @return #CO_ReturnError_t: CO_ERROR_NO, CO_ERROR_ILLEGAL_ARGUMENT,
  * CO_ERROR_ILLEGAL_BAUDRATE, CO_ERROR_OUT_OF_MEMORY
  */
-CO_ReturnError_t CO_CANinit(
-        int32_t                 CANbaseAddress,
-        uint16_t                bitRate);
-
+CO_ReturnError_t CO_CANinit(int32_t CANbaseAddress, uint16_t bitRate);
 
 /**
  * Initialize CANopen LSS slave
  *
  * Function must be called in the communication reset section.
  *
- * @param nodeId Node ID of the CANopen device (1 ... 127) or CO_LSS_NODE_ID_ASSIGNMENT
+ * @param nodeId Node ID of the CANopen device (1 ... 127) or
+ * CO_LSS_NODE_ID_ASSIGNMENT
  * @param bitRate CAN bit rate.
  * @return #CO_ReturnError_t: CO_ERROR_NO, CO_ERROR_ILLEGAL_ARGUMENT
  */
-CO_ReturnError_t CO_LSSinit(
-        uint8_t                 nodeId,
-        uint16_t                bitRate);
-
+CO_ReturnError_t CO_LSSinit(uint8_t nodeId, uint16_t bitRate);
 
 /**
  * Initialize CANopen stack.
@@ -224,9 +213,7 @@ CO_ReturnError_t CO_LSSinit(
  * @param nodeId Node ID of the CANopen device (1 ... 127).
  * @return #CO_ReturnError_t: CO_ERROR_NO, CO_ERROR_ILLEGAL_ARGUMENT
  */
-CO_ReturnError_t CO_CANopenInit(
-        uint8_t                 nodeId);
-
+CO_ReturnError_t CO_CANopenInit(uint8_t nodeId);
 
 #else /* CO_NO_LSS_SERVER == 1 */
 /**
@@ -234,28 +221,25 @@ CO_ReturnError_t CO_CANopenInit(
  *
  * Function must be called in the communication reset section.
  *
- * @param CANbaseAddress Address of the CAN module, passed to CO_CANmodule_init().
+ * @param CANbaseAddress Address of the CAN module, passed to
+ * CO_CANmodule_init().
  * @param nodeId Node ID of the CANopen device (1 ... 127).
  * @param bitRate CAN bit rate.
  *
  * @return #CO_ReturnError_t: CO_ERROR_NO, CO_ERROR_ILLEGAL_ARGUMENT,
  * CO_ERROR_OUT_OF_MEMORY, CO_ERROR_ILLEGAL_BAUDRATE
  */
-CO_ReturnError_t CO_init(
-        int32_t                 CANbaseAddress,
-        uint8_t                 nodeId,
-        uint16_t                bitRate);
+CO_ReturnError_t CO_init(int32_t CANbaseAddress, uint8_t nodeId, uint16_t bitRate);
 
 #endif /* CO_NO_LSS_SERVER == 1 */
-
 
 /**
  * Delete CANopen object and free memory. Must be called at program exit.
  *
- * @param CANbaseAddress Address of the CAN module, passed to CO_CANmodule_init().
+ * @param CANbaseAddress Address of the CAN module, passed to
+ * CO_CANmodule_init().
  */
 void CO_delete(int32_t CANbaseAddress);
-
 
 /**
  * Process CANopen objects.
@@ -264,7 +248,8 @@ void CO_delete(int32_t CANbaseAddress);
  * objects.
  *
  * @param CO This object
- * @param timeDifference_ms Time difference from previous function call in [milliseconds].
+ * @param timeDifference_ms Time difference from previous function call in
+ * [milliseconds].
  * @param timerNext_ms Return value - info to OS - maximum delay after function
  *        should be called next time in [milliseconds]. Value can be used for OS
  *        sleep time. Initial value must be set to something, 50ms typically.
@@ -274,11 +259,7 @@ void CO_delete(int32_t CANbaseAddress);
  *
  * @return #CO_NMT_reset_cmd_t from CO_NMT_process().
  */
-CO_NMT_reset_cmd_t CO_process(
-        CO_t                   *CO,
-        uint16_t                timeDifference_ms,
-        uint16_t               *timerNext_ms);
-
+CO_NMT_reset_cmd_t CO_process(CO_t* CO, uint16_t timeDifference_ms, uint16_t* timerNext_ms);
 
 /**
  * Process CANopen SYNC and RPDO objects.
@@ -287,14 +268,12 @@ CO_NMT_reset_cmd_t CO_process(
  * interval (1ms typically). It processes SYNC and receive PDO CANopen objects.
  *
  * @param CO This object.
- * @param timeDifference_us Time difference from previous function call in [microseconds].
+ * @param timeDifference_us Time difference from previous function call in
+ * [microseconds].
  *
  * @return True, if CANopen SYNC message was just received or transmitted.
  */
-bool_t CO_process_SYNC_RPDO(
-        CO_t                   *CO,
-        uint32_t                timeDifference_us);
-
+bool_t CO_process_SYNC_RPDO(CO_t* CO, uint32_t timeDifference_us);
 
 /**
  * Process CANopen TPDO objects.
@@ -303,17 +282,16 @@ bool_t CO_process_SYNC_RPDO(
  * interval (1ms typically). It processes transmit PDO CANopen objects.
  *
  * @param CO This object.
- * @param syncWas True, if CANopen SYNC message was just received or transmitted.
- * @param timeDifference_us Time difference from previous function call in [microseconds].
+ * @param syncWas True, if CANopen SYNC message was just received or
+ * transmitted.
+ * @param timeDifference_us Time difference from previous function call in
+ * [microseconds].
  */
-void CO_process_TPDO(
-        CO_t                   *CO,
-        bool_t                  syncWas,
-        uint32_t                timeDifference_us);
+void CO_process_TPDO(CO_t* CO, bool_t syncWas, uint32_t timeDifference_us);
 
 #ifdef __cplusplus
 }
-#endif /*__cplusplus*/
+#endif /* __cplusplus */
 
 /** @} */
-#endif
+#endif /* DEF_CANOPEN_H */
